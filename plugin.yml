@@ -1,0 +1,10 @@
+name: Events
+version: 1.0.0
+description: Make your own events!
+author: Ultimate 
+main: me.ultimate.E.Events
+
+commands:
+  event:
+    description: Control events!
+    usage: /<command> <args>
