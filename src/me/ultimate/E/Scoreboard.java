@@ -15,6 +15,7 @@ import org.bukkit.scoreboard.ScoreboardManager;
 
 public class Scoreboard extends BukkitRunnable {
 
+    @SuppressWarnings("unused")
     private final JavaPlugin plugin;
 
     public Scoreboard(JavaPlugin plugin) {
@@ -23,25 +24,26 @@ public class Scoreboard extends BukkitRunnable {
 
     long time;
 
+    //This runs every second, updating the board. Seconds will show if minutes are under 1.
     public void run() {
         org.bukkit.scoreboard.Scoreboard board;
         ScoreboardManager manager = Bukkit.getScoreboardManager();
         board = (org.bukkit.scoreboard.Scoreboard) manager.getNewScoreboard();
         Objective objective = ((org.bukkit.scoreboard.Scoreboard) board).registerNewObjective("test", "dummy");
         objective.setDisplaySlot(DisplaySlot.SIDEBAR);
-        objective.setDisplayName(t("&6&l-=-[ Coalition Events ]-=-"));
+        objective.setDisplayName(t("&6&l-=-[ " + "Insert Game Here" + " ]-=-"));
         long ms = Calendar.getInstance().getTimeInMillis();
-        if (time == 0)
+        if (time <= ms)
             time = ms + 900000;
-        if (time == ms)
-            time = 0;
         int m2s = (int) (TimeUnit.MILLISECONDS.toMinutes(time - ms) * 60);
         int finalS = (int) TimeUnit.MILLISECONDS.toSeconds(time - ms) - m2s;
-        plugin.getLogger().info(m2s + "    " + finalS);
-        Score score = objective.getScore(Bukkit.getOfflinePlayer(t("Minutes: ")));
-        score.setScore((int) TimeUnit.MILLISECONDS.toMinutes(time - ms));
-        Score score2 = objective.getScore(Bukkit.getOfflinePlayer(t("Seconds:")));
-        score2.setScore(finalS);
+        if (TimeUnit.MILLISECONDS.toMinutes(time - ms) > 0) {
+            Score score = objective.getScore(Bukkit.getOfflinePlayer(t("Minutes: ")));
+            score.setScore((int) TimeUnit.MILLISECONDS.toMinutes(time - ms));
+        } else {
+            Score score2 = objective.getScore(Bukkit.getOfflinePlayer(t("Seconds:")));
+            score2.setScore(finalS);
+        }
         for (Player p : Bukkit.getOnlinePlayers())
             p.setScoreboard(board);
     }
