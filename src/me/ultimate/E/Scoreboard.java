@@ -23,37 +23,38 @@ public class Scoreboard extends BukkitRunnable {
     @SuppressWarnings("unused")
     private final JavaPlugin plugin;
 
-    public Scoreboard(JavaPlugin plugin) {
+    public Scoreboard(final JavaPlugin plugin) {
         this.plugin = plugin;
     }
 
     long time;
 
     //This runs every second, updating the board. Seconds will show if minutes are under 1.
+    @Override
     public void run() {
         org.bukkit.scoreboard.Scoreboard board;
-        ScoreboardManager manager = Bukkit.getScoreboardManager();
-        board = (org.bukkit.scoreboard.Scoreboard) manager.getNewScoreboard();
-        Objective objective = ((org.bukkit.scoreboard.Scoreboard) board).registerNewObjective("test", "dummy");
+        final ScoreboardManager manager = Bukkit.getScoreboardManager();
+        board = manager.getNewScoreboard();
+        final Objective objective = board.registerNewObjective("test", "dummy");
         objective.setDisplaySlot(DisplaySlot.SIDEBAR);
         objective.setDisplayName(t("&6&l-=-[ " + "Insert Game Here" + " ]-=-"));
-        long ms = Calendar.getInstance().getTimeInMillis();
+        final long ms = Calendar.getInstance().getTimeInMillis();
         if (time <= ms)
             time = ms + 900000;
-        int m2s = (int) (TimeUnit.MILLISECONDS.toMinutes(time - ms) * 60);
-        int finalS = (int) TimeUnit.MILLISECONDS.toSeconds(time - ms) - m2s;
+        final int m2s = (int) (TimeUnit.MILLISECONDS.toMinutes(time - ms) * 60);
+        final int finalS = (int) TimeUnit.MILLISECONDS.toSeconds(time - ms) - m2s;
         if (TimeUnit.MILLISECONDS.toMinutes(time - ms) > 0) {
-            Score score = objective.getScore(Bukkit.getOfflinePlayer(t("Minutes: ")));
+            final Score score = objective.getScore(Bukkit.getOfflinePlayer(t("Minutes: ")));
             score.setScore((int) TimeUnit.MILLISECONDS.toMinutes(time - ms));
         } else {
-            Score score2 = objective.getScore(Bukkit.getOfflinePlayer(t("Seconds:")));
+            final Score score2 = objective.getScore(Bukkit.getOfflinePlayer(t("Seconds:")));
             score2.setScore(finalS);
         }
-        for (Player p : Bukkit.getOnlinePlayers())
+        for (final Player p : Bukkit.getOnlinePlayers())
             p.setScoreboard(board);
     }
 
-    String t(String msg) {
+    String t(final String msg) {
         return ChatColor.translateAlternateColorCodes('&', msg);
     }
 }

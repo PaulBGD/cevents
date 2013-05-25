@@ -5,25 +5,30 @@
  */
 package me.ultimate.E;
 
+import java.util.HashMap;
+
+import me.ultimate.E.ChatManager.ChatListener;
+
+import org.bukkit.Location;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitTask;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
 
 public class Events extends JavaPlugin {
 
     Location loc;
     String eventName;
     BukkitTask Scoreboard;
+    HashMap<Player, String> playerEvent = new HashMap<Player, String>();
+    String currentEvent;
 
+    @Override
     public void onEnable() {
         Scoreboard = new Scoreboard(this).runTaskTimer(this, 20, 20);
+        getServer().getPluginManager().registerEvents(new ChatListener(), this);
     }
 
-    String t(String msg) {
-        return ChatColor.translateAlternateColorCodes('&', msg);
-    }
-
+    @Override
     public void onDisable() {
         Scoreboard.cancel();
     }
