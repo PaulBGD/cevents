@@ -26,6 +26,8 @@ public class Events extends JavaPlugin {
     public void onEnable() {
         Scoreboard = new Scoreboard(this).runTaskTimer(this, 20, 20);
         getServer().getPluginManager().registerEvents(new ChatListener(), this);
+        getConfig().options().copyDefaults(true);
+        saveConfig();
     }
 
     @Override
