@@ -24,6 +24,10 @@ public class ChatListener implements Listener {
         } else {
             event.setFormat(t("&c" + p.getCustomName() + " &4&l>> &r&c" + event.getMessage()));
         }
+        String message = event.getMessage();
+        message.replaceAll(" u ", "you");
+        message.replaceAll(" im ", " I'm ");
+        message.replaceAll(" y ", " why ");
     }
 
     public String t(final String msg) {
