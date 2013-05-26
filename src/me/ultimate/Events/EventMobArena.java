@@ -11,9 +11,11 @@ import me.ultimate.E.EventsMethods;
 import me.ultimate.E.Events;
 
 import org.bukkit.Bukkit;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.plugin.Plugin;
 
@@ -38,7 +40,7 @@ public class EventMobArena implements Listener {
     public void onStart(final List<Player> players) {
         for (final Player p : players) {
             if (p.isOnline())
-                p.chat("/ma join " + new EventsMethods().randomArena(Arenas));
+                p.chat("/ma join " + new EventsMethods(Events).randomArena(Arenas));
         }
     }
 
@@ -51,6 +53,18 @@ public class EventMobArena implements Listener {
     public void onPlayerDeathEvent(PlayerDeathEvent event) {
         Player p = event.getEntity();
         if (ma.getArenaAtLocation(p.getLocation()) != null)
-            new EventsMethods().removePlayerFromEvent(p.getName());
+            new EventsMethods(Events).removePlayerFromEvent(p.getName());
+    }
+
+    @EventHandler
+    public void onEntityDeathEvent(EntityDeathEvent event) {
+        if (event.getEntity() instanceof LivingEntity && event.getEntity().getKiller() instanceof Player) {
+            if(ma.getArenaWithMonster(event.getEntity()) != null){
+                new EventsMethods(Events).addPlayerPoints(event.getEntity().getKiller(), 1);
+            if(ma.getArenaWithMonster(event.getEntity()).getMonsterManager().getBossMonsters().contains(event.getEntity()))
+                new EventsMethods(Events).addPlayerPoints(event.getEntity().getKiller(), 2);
+            }
+            
+        }
     }
 }

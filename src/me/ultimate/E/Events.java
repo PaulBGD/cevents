@@ -8,6 +8,7 @@ package me.ultimate.E;
 import java.util.HashMap;
 
 import me.ultimate.E.ChatManager.ChatListener;
+import me.ultimate.Events.EventMobArena;
 
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -17,15 +18,13 @@ import org.bukkit.scheduler.BukkitTask;
 public class Events extends JavaPlugin {
 
     Location loc;
-    String eventName;
     BukkitTask Scoreboard;
     HashMap<Player, String> playerEvent = new HashMap<Player, String>();
-    String currentEvent;
 
     @Override
     public void onEnable() {
-        Scoreboard = new Scoreboard(this).runTaskTimer(this, 20, 20);
-        getServer().getPluginManager().registerEvents(new ChatListener(), this);
+        Scoreboard = new Scoreboard(this).runTaskTimer(this, 1, 1);
+        getServer().getPluginManager().registerEvents(new ChatListener(this), this);
         getConfig().options().copyDefaults(true);
         saveConfig();
     }
@@ -33,5 +32,11 @@ public class Events extends JavaPlugin {
     @Override
     public void onDisable() {
         Scoreboard.cancel();
+    }
+    public EventsMethods getUtil(){
+        return new EventsMethods(null);
+    }
+    public EventMobArena getMA(){
+        return new EventMobArena();
     }
 }

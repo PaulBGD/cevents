@@ -20,14 +20,15 @@ import org.bukkit.scoreboard.ScoreboardManager;
 
 public class Scoreboard extends BukkitRunnable {
 
-    @SuppressWarnings("unused")
     private final JavaPlugin plugin;
 
     public Scoreboard(final JavaPlugin plugin) {
         this.plugin = plugin;
+        plugin.getLogger().info("Started scoreboard!");
     }
 
     long time;
+    Events Events = new Events();
 
     //This runs every second, updating the board. Seconds will show if minutes are under 1.
     @Override
@@ -37,21 +38,27 @@ public class Scoreboard extends BukkitRunnable {
         board = manager.getNewScoreboard();
         final Objective objective = board.registerNewObjective("test", "dummy");
         objective.setDisplaySlot(DisplaySlot.SIDEBAR);
-        objective.setDisplayName(t("&6&l-=-[ " + "Insert Game Here" + " ]-=-"));
+        objective.setDisplayName(t("&6&l-=-[ " + Events.getUtil().currentEvent + " ]-=-"));
         final long ms = Calendar.getInstance().getTimeInMillis();
-        if (time <= ms)
+        if (time <= ms) {
+            Events.getUtil().startEvent();
             time = ms + 900000;
+            Events.getUtil().preEvent();
+            plugin.getLogger().info(Events.getUtil().currentEvent());
+        }
         final int m2s = (int) (TimeUnit.MILLISECONDS.toMinutes(time - ms) * 60);
         final int finalS = (int) TimeUnit.MILLISECONDS.toSeconds(time - ms) - m2s;
-        if (TimeUnit.MILLISECONDS.toMinutes(time - ms) > 0) {
-            final Score score = objective.getScore(Bukkit.getOfflinePlayer(t("Minutes: ")));
-            score.setScore((int) TimeUnit.MILLISECONDS.toMinutes(time - ms));
-        } else {
-            final Score score2 = objective.getScore(Bukkit.getOfflinePlayer(t("Seconds:")));
-            score2.setScore(finalS);
-        }
-        for (final Player p : Bukkit.getOnlinePlayers())
+        final Score score = objective.getScore(Bukkit.getOfflinePlayer(t("Minutes: ")));
+        score.setScore((int) TimeUnit.MILLISECONDS.toMinutes(time - ms));
+        for (final Player p : Bukkit.getOnlinePlayers()) {
             p.setScoreboard(board);
+            if (TimeUnit.MILLISECONDS.toMinutes(time - ms) > 0) {
+                p.setLevel((int) TimeUnit.MILLISECONDS.toMinutes(time - ms));
+            } else {
+                p.setLevel(finalS);
+            }
+            p.setExp((float) ((finalS * 1.6) / 100.0f));
+        }
     }
 
     String t(final String msg) {

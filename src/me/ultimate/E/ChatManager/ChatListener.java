@@ -10,25 +10,19 @@ import me.ultimate.E.Events;
 
 public class ChatListener implements Listener {
 
-    Events Events = new Events();
+    Events Events;
+
+    public ChatListener(Events main) {
+        Events = main;
+    }
 
     @EventHandler
     public void onAsyncPlayerChat(AsyncPlayerChatEvent event) {
         Player p = event.getPlayer();
-        String prefix = null;
-        String suffix = null;
-        for (String perm : Events.getConfig().getConfigurationSection("Prefixes").getKeys(false)) {
-            if (p.hasPermission(Events.getConfig().getString(perm + ".Permission")))
-                prefix = Events.getConfig().getString(perm + ".Prefix");
-        }
-        for (String perm : Events.getConfig().getConfigurationSection("Suffixes").getKeys(false)) {
-            if (p.hasPermission(Events.getConfig().getString(perm + ".Permission")))
-                suffix = Events.getConfig().getString(perm + ".Suffix");
-        }
         if (!p.hasPermission("events.chat")) {
-            event.setFormat(t(prefix + p.getCustomName() + "&r" + suffix + " &lx>> &r&e" + event.getMessage()));
+            event.setFormat(t("&e" + p.getCustomName() + " &l>> &r" + event.getMessage()));
         } else {
-            event.setFormat(t(suffix + "&c&l" + p.getCustomName() + "&r" + suffix + " &4&l>> &r&7" + event.getMessage()));
+            event.setFormat(t("&c" + p.getCustomName() + " &4&l>> &r&c" + event.getMessage()));
         }
     }
 

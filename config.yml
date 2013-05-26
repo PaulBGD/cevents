@@ -1,8 +1,3 @@
-Prefixes:
-    Basic:
-        Permission: 'events.chat.basic'
-        Prefix: '&8[&7Basic&8]'
-Suffixes:
-    Basic:
-        Permission: 'events.chat.basic2'
-        Suffix: '&8[&7Basic2&8]'
+MobArena:
+    Arenas:
+    - default
