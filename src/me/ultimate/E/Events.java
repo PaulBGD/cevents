@@ -21,30 +21,36 @@ import com.earth2me.essentials.Essentials;
 public class Events extends JavaPlugin {
 
     Location loc;
-    BukkitTask Scoreboard;
+    BukkitTask Timer;
     HashMap<Player, String> playerEvent = new HashMap<Player, String>();
 
     @Override
     public void onEnable() {
-        Bukkit.getPluginManager().getPlugin("Essentials");
-        Scoreboard = new Scoreboard(this).runTaskTimer(this, 1, 1);
-        getServer().getPluginManager().registerEvents(new ChatListener(this), this);
         getConfig().options().copyDefaults(true);
+        Bukkit.getPluginManager().getPlugin("Essentials");
+        Timer = new Timer(this).runTaskTimer(this, 1, 1);
+        getServer().getPluginManager().registerEvents(new ChatListener(this), this);
         saveConfig();
     }
 
     @Override
     public void onDisable() {
-        Scoreboard.cancel();
+        cancelTimers();
     }
-    public EventsMethods getUtil(){
+
+    public EventsMethods getUtil() {
         return new EventsMethods(null);
     }
-    public EventMobArena getMA(){
+
+    public EventMobArena getMA() {
         return new EventMobArena();
     }
-    public Essentials getEssentials(){
-        Essentials ess = (Essentials) Bukkit.getPluginManager().getPlugin("Essentials");
-        return ess;
+
+    public Essentials getEssentials() {
+        return (Essentials) Bukkit.getPluginManager().getPlugin("Essentials");
+    }
+
+    public void cancelTimers() {
+        Timer.cancel();
     }
 }

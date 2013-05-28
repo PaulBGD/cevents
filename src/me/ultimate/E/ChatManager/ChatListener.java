@@ -1,5 +1,7 @@
 package me.ultimate.E.ChatManager;
 
+import java.util.List;
+
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -32,13 +34,16 @@ public class ChatListener implements Listener {
 
     }
 
+    List<?>aCommands = Events.getConfig().getList("AllowedCommands");
     @EventHandler
     public void onCmdProccess(PlayerCommandPreprocessEvent event) {
-        if(event.getMessage().startsWith("/") && !event.getPlayer().hasPermission("events.admin") && !event.getMessage().startsWith("events")){
+        for(Object aC : aCommands)
+        if (event.getMessage().startsWith("/") && !event.getPlayer().hasPermission("events.admin")
+                && !event.getMessage().startsWith(aC.toString())) {
             event.setCancelled(true);
             event.getPlayer().sendMessage(t("&cYou don't need to do that!"));
         }
-            
+
     }
 
     public String t(final String msg) {

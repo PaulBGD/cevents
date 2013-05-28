@@ -1,3 +1,6 @@
 MobArena:
     Arenas:
     - default
+AllowedCommands:
+    - /event
+    - /vote
