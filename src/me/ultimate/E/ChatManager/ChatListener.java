@@ -46,7 +46,34 @@ public class ChatListener implements Listener {
 
     }
 
-    public String t(final String msg) {
+    private String t(final String msg) {
         return ChatColor.translateAlternateColorCodes('&', msg);
+    }
+    
+    //fun little thing I thought up 
+    //also I am eding by hand (no editor) so you may need to check things -shadowlordalha
+    //This is a fully configuralble %*word*% replacer
+    private String otherThing(String msg) {
+        String newMsg = "";
+        String symbol = /*get a string from the config to use as the symbol*/;
+        if (msg.contains(symbol) {
+            String[] splitMsg = msg.split(" ");
+            for (String s: splitMsg) {
+                if (s.startsWith(symbol) && s.endsWith(symbol)) {
+                    s = s.replace(symbol, "");
+                    for (Stting s2: /* get all the config keys for different words*/) {
+                        if (s.equalsIgnoreCase(s2)) {
+                            s = /*getString the config with s2 as the key*/;
+                            break; //leave the loop
+                        }
+                    }
+                }
+                
+                newMsg += s + " ";
+            }
+            newMsg = newMsg.trim();
+            return newMsg;
+        }
+        return msg;
     }
 }

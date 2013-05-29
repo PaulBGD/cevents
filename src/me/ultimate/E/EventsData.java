@@ -11,7 +11,9 @@ import org.bukkit.entity.Player;
 
 public class EventsData {
 
-    HashMap<Player, String>playerEvent = new HashMap<Player, String>();
+    //HashMap take <Player name. whatever this is for> 
+    //Try to never store the player if you can help it use the getPlayer method from the server
+    HashMap<String, String>playerEvent = new HashMap<String, String>();
     String currentEvent;
     
 }
