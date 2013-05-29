@@ -44,5 +44,4 @@ public class Score {
 
         return scoreBoard.get(playerName);
     }
-
 }
