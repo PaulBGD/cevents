@@ -13,10 +13,10 @@ public class Score {
   private HashMap<String, String> scoreBoard = new HashMap<String, String>();
 
   /**
-  *
-  *Used to start a new score
-  *
-  */
+   *
+   *Used to start a new score
+   *
+   */
   public Score() {
     implementaion = this;
   }
@@ -34,13 +34,21 @@ public class Score {
   }
   
   /**
-  *
-  *Get the players score that is stored
-  *used mostly internaly
-  */
+   *
+   *Get the players score that is stored
+   *used mostly internaly
+   */
   public double getScore(String playerName) {
   
     return scoreBoard.get(playerName);
+  }
+  
+  /**
+   * Returns a full HashMap of all the scores and players in the HashMap
+   * 
+   */
+  public HashMap<String, String> getScoreBoard() {
+    return scoreBoard;
   }
 
 }
