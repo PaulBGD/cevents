@@ -1,13 +1,13 @@
 package me.ultimate.E.ChatManager;
 
-import java.util.List;
+//import java.util.List;
 
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
-import org.bukkit.event.player.PlayerCommandPreprocessEvent;
+//import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
 import com.earth2me.essentials.Essentials;
 
@@ -25,26 +25,29 @@ public class ChatListener implements Listener {
     public void onAsyncPlayerChat(AsyncPlayerChatEvent event) {
         Essentials ess = Events.getEssentials();
         Player p = event.getPlayer();
+        String name = event.getPlayer().getName();
+        if (ess.getUser(p)._getNickname() != null)
+            name = ess.getUser(p)._getNickname();
         if (!p.hasPermission("events.chat.admin")) {
-            String format = t("&e" + ess.getUser(p)._getNickname() + " &l>> &r");
+            String format = t("&e" + name + " &l>> &r");
             event.setFormat(format + event.getMessage());
-        } else {
-            event.setFormat(t("&c" + ess.getUser(p)._getNickname() + " &4&l>> &r&c" + event.getMessage()));
-        }
+        } else
+            event.setFormat(t("&c" + name + " &4&l>> &r&c" + event.getMessage()));
 
     }
 
-    List<?>aCommands = Events.getConfig().getList("AllowedCommands");
-    @EventHandler
+    //List<?> aCommands = Events.getConfig().getList("AllowedCommands");
+
+    /*@EventHandler
     public void onCmdProccess(PlayerCommandPreprocessEvent event) {
-        for(Object aC : aCommands)
-        if (event.getMessage().startsWith("/") && !event.getPlayer().hasPermission("events.admin")
-                && !event.getMessage().startsWith(aC.toString())) {
-            event.setCancelled(true);
-            event.getPlayer().sendMessage(t("&cYou don't need to do that!"));
-        }
+        for (Object aC : aCommands)
+            if (event.getMessage().startsWith("/") && !event.getPlayer().hasPermission("events.admin")
+                    && !event.getMessage().startsWith(aC.toString())) {
+                event.setCancelled(true);
+                event.getPlayer().sendMessage(t("&cYou don't need to do that!"));
+            }
 
-    }
+    }*/
 
     public String t(final String msg) {
         return ChatColor.translateAlternateColorCodes('&', msg);
