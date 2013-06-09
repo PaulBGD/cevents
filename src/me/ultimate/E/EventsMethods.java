@@ -9,29 +9,26 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import me.ultimate.Events.BasicEvent;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.java.JavaPlugin;
 
 public class EventsMethods {
 
     //QUICK NOTE!: If it is asking for a string in a method related to a player, it is asking for his name. Not his display name, p.getName()
     Events Events = new Events();
-    @SuppressWarnings("unused")
-    private final JavaPlugin plugin;
     String currentEvent;
-
-    public EventsMethods(final JavaPlugin plugin) {
-        this.plugin = plugin;
-    }
+    List<BasicEvent>events;
 
     int eventNum;
 
     public void preEvent() {
         currentEvent = "MobArena";
+        System.out.println(currentEvent);
     }
-
+    
     public void startEvent() {
         final List<Player> players = new ArrayList<Player>();
         for (final Player p : Bukkit.getOnlinePlayers())
@@ -81,7 +78,7 @@ public class EventsMethods {
         return (String) Arenas.get(new Random().nextInt(Arenas.size()));
     }
 
-    public void addPlayerPoints(Player p, int Points) {
+    public void addPlayerPoints(final Player p, final int Points) {
         int playerPoints = 0;
         if (Events.getConfig().get(p.getName()) != null) {
             playerPoints = Events.getConfig().getInt(p.getName()) + Points;
@@ -91,7 +88,7 @@ public class EventsMethods {
         }
     }
 
-    public void removePlayerPoints(Player p, int Points) {
+    public void removePlayerPoints(final Player p, final int Points) {
         int playerPoints = 0;
         if (Events.getConfig().get(p.getName()) != null) {
             playerPoints = Events.getConfig().getInt(p.getName()) - Points;
@@ -99,6 +96,11 @@ public class EventsMethods {
         } else {
             Events.getConfig().set(p.getName(), playerPoints - Points);
         }
+    }
+    
+    public void registerEvent(BasicEvent BE){
+        BE.onPublicStart();
+        events.add(BE);
     }
 
 }

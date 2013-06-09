@@ -11,7 +11,7 @@ import org.bukkit.entity.Player;
 
 public class EventsData {
 
-    HashMap<Player, String>playerEvent = new HashMap<Player, String>();
+    HashMap<Player, String> playerEvent = new HashMap<Player, String>();
     String currentEvent;
-    
+
 }

@@ -16,6 +16,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 public class Timer extends BukkitRunnable {
 
+    @SuppressWarnings("unused")
     private final JavaPlugin plugin;
 
     public Timer(final JavaPlugin plugin) {
@@ -34,20 +35,22 @@ public class Timer extends BukkitRunnable {
             Events.getUtil().startEvent();
             time = ms + 900000;
             Events.getUtil().preEvent();
-            plugin.getLogger().info(Events.getUtil().currentEvent());
         }
         final int m2s = (int) (TimeUnit.MILLISECONDS.toMinutes(time - ms) * 60);
         final int finalS = (int) TimeUnit.MILLISECONDS.toSeconds(time - ms) - m2s;
         for (final Player p : Bukkit.getOnlinePlayers()) {
-            if (TimeUnit.MILLISECONDS.toMinutes(time - ms) > 0) {
-                p.setLevel((int) TimeUnit.MILLISECONDS.toMinutes(time - ms));
-            } else {
-                p.setLevel(finalS);
+            EventPlayer eP = new EventPlayer(p);
+            if (!eP.inEvent()) {
+                if (TimeUnit.MILLISECONDS.toMinutes(time - ms) > 0) {
+                    p.setLevel((int) TimeUnit.MILLISECONDS.toMinutes(time - ms));
+                } else {
+                    p.setLevel(finalS);
+                }
+                final float exp = (float) (time - ms) / 60000;
+                p.setExp(exp - ((int) TimeUnit.MILLISECONDS.toMinutes(time - ms)));
+                p.setExhaustion(0);
+                p.setFoodLevel(20);
             }
-            float exp = (float) (time - ms) / 60000;
-            p.setExp((float) exp - ((int) TimeUnit.MILLISECONDS.toMinutes(time - ms)));
-            p.setExhaustion(0);
-            p.setFoodLevel(20);
         }
     }
 

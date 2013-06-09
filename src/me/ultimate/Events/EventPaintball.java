@@ -6,12 +6,31 @@
 
 package me.ultimate.Events;
 
-import org.bukkit.event.Listener;
+import java.util.List;
+
+import org.bukkit.entity.Player;
 
 //imports here
 
+public class EventPaintball implements BasicEvent {
 
-public class EventPaintball implements Listener {
+    @Override
+    public void onPublicStart() {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void onStart(List<Player> p) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void onEnd() {
+        // TODO Auto-generated method stub
+        
+    }
 
 //does nothing for now as this is a possible placeholder
 
